@@ -4,6 +4,7 @@ const path = require('path');
 const WebSocket = require('ws');
 
 const app = express();
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -11,13 +12,17 @@ const CLIENT_ID = '1552641681617326110';
 const CLIENT_SECRET = process.env.CLIENT_SECRET || 'y_wrDrVqbMG1wnlWZ6rrEAbqAj0CLctF';
 const REDIRECT_URI = 'https://c-panel-1.onrender.com/callback';
 
+// Main Dashboard Page
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// OAuth2 Callback Route (Yahin par "Not Found" aa raha tha)
 app.get('/callback', async (req, res) => {
     const code = req.query.code;
-    if (!code) return res.send('Authorization failed: No code provided.');
+    if (!code) {
+        return res.send('<h3>Authorization failed: No code provided from Discord.</h3><p><a href="/">Go Back</a></p>');
+    }
 
     try {
         const tokenResponse = await fetch('https://discord.com/api/oauth2/token', {
@@ -33,16 +38,27 @@ app.get('/callback', async (req, res) => {
         });
 
         const oauthData = await tokenResponse.json();
+        
         if (oauthData.access_token) {
-            res.send(`<html><body style="background:#0f1016;color:#fff;font-family:Arial;text-align:center;padding-top:50px;"><h3>Authorized Successfully!</h3><p>Aapka Access Token yeh hai:</p><textarea style="width:80%;height:80px;background:#24283b;color:#fff;border-radius:6px;padding:10px;">${oauthData.access_token}</textarea><br><br><a href="/" style="color:#7aa2f7;">Go Back to Dashboard</a></body></html>`);
+            res.send(`
+                <html>
+                <body style="background:#0f1016;color:#fff;font-family:Arial;text-align:center;padding-top:50px;">
+                    <h3 style="color:#7aa2f7;">Authorized Successfully!</h3>
+                    <p>Aapka Access Token neeche diya gaya hai. Isko copy karke dashboard mein paste kar lo:</p>
+                    <textarea style="width:80%;height:80px;background:#24283b;color:#fff;border-radius:6px;padding:10px;border:none;" readonly>${oauthData.access_token}</textarea><br><br>
+                    <a href="/" style="color:#7aa2f7;text-decoration:none;background:#1a1b26;padding:10px 20px;border-radius:6px;display:inline-block;">Go Back to Dashboard</a>
+                </body>
+                </html>
+            `);
         } else {
-            res.send(`OAuth Error: ${JSON.stringify(oauthData)}`);
+            res.send(`<h3>OAuth Error:</h3><pre>${JSON.stringify(oauthData, null, 2)}</pre><p><a href="/">Go Back</a></p>`);
         }
     } catch (err) {
-        res.send(`Error: ${err.message}`);
+        res.send(`<h3>Server Error:</h3><p>${err.message}</p><p><a href="/">Go Back</a></p>`);
     }
 });
 
+// Enable RPC WebSocket Route
 app.post('/enable-rpc', async (req, res) => {
     const { token, activityType, name, details, state, largeImageURL, button1Label, button1Url, button2Label, button2Url } = req.body;
     
@@ -92,7 +108,7 @@ app.post('/enable-rpc', async (req, res) => {
             }
         });
 
-        ws.on('close', () => {
+ws.on('close', () => {
             if (heartbeatInterval) clearInterval(heartbeatInterval);
         });
 
