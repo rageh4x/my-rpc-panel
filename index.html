@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom RPC Panel - Pro</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #0f1016; color: #fff; display: flex; justify-content: center; margin: 0; padding: 20px; }
+        .card { background: #1a1b26; padding: 25px; border-radius: 12px; width: 400px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        h2 { text-align: center; color: #7aa2f7; }
+        label { font-size: 12px; color: #a9b1d6; margin-top: 10px; display: block; }
+        input, select, button { width: 100%; padding: 10px; margin-top: 5px; border-radius: 6px; border: none; outline: none; box-sizing: border-box; }
+        input, select { background: #24283b; color: #fff; }
+        button { background: #7aa2f7; color: #fff; font-weight: bold; cursor: pointer; margin-top: 15px; }
+        button:hover { background: #565f89; }
+        .discord-btn { background: #5865F2; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Custom RPC Panel</h2>
+        <a href="https://discord.com/api/oauth2/authorize?client_id=1552641681617326110&redirect_uri=https%3A%2F%2Fmy-rpc-panel-1.onrender.com%2Fcallback&response_type=code&scope=rpc">
+            <button class="discord-btn">Login with Discord</button>
+        </a>
+        <form action="/enable-rpc" method="POST">
+            <label>Token (After Login)</label>
+            <input type="text" name="token" placeholder="Enter your token here" required>
+
+            <label>Activity Type</label>
+            <select name="activityType">
+                <option value="0">Playing</option>
+                <option value="1">Streaming</option>
+                <option value="2">Listening</option>
+                <option value="3">Watching</option>
+                <option value="5">Competing</option>
+            </select>
+            
+            <label>Activity Name</label>
+            <input type="text" name="name" value="Minecraft">
+            
+            <label>Details</label>
+            <input type="text" name="details" placeholder="Playing on Server">
+            
+            <label>State</label>
+            <input type="text" name="state" placeholder="In Game">
+
+            <label>Large Image URL</label>
+            <input type="text" name="largeImageURL" placeholder="https://...">
+
+            <label>Button 1 Label</label>
+            <input type="text" name="button1Label" placeholder="View Repository">
+            <label>Button 1 URL</label>
+            <input type="text" name="button1Url" placeholder="https://...">
+
+            <label>Button 2 Label</label>
+            <input type="text" name="button2Label" placeholder="Join Server">
+            <label>Button 2 URL</label>
+            <input type="text" name="button2Url" placeholder="https://...">
+            
+            <button type="submit">Enable RPC</button>
+        </form>
+    </div>
+</body>
+</html>
