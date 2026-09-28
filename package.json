@@ -1,14 +1,13 @@
 {
-  "name": "custom-rpc-panel",
+  "name": "custom-discord-rpc",
   "version": "1.0.0",
-  "description": "24/7 Custom Discord RPC Dashboard",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "axios": "^1.6.0",
-    "ws": "^8.14.2"
+    "express": "^4.19.2",
+    "node-fetch": "^2.7.0",
+    "ws": "^8.16.0"
   }
 }
