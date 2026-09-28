@@ -9,7 +9,7 @@ app.use(express.json());
 
 const CLIENT_ID = '1552641681617326110';
 const CLIENT_SECRET = process.env.CLIENT_SECRET || 'y_wrDrVqbMG1wnlWZ6rrEAbqAj0CLctF';
-const REDIRECT_URI = 'https://my-rpc-panel-1.onrender.com/callback';
+const REDIRECT_URI = 'https://c-panel-1.onrender.com/callback';
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
