@@ -7,9 +7,9 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-const CLIENT_ID = process.env.CLIENT_ID;
-const CLIENT_SECRET = process.env.CLIENT_SECRET;
-const REDIRECT_URI = process.env.REDIRECT_URI;
+const CLIENT_ID = '1552641681617326110';
+const CLIENT_SECRET = process.env.CLIENT_SECRET || 'y_wrDrVqbMG1wnlWZ6rrEAbqAj0CLctF';
+const REDIRECT_URI = 'https://my-rpc-panel-1.onrender.com/callback';
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
@@ -53,7 +53,6 @@ app.post('/enable-rpc', async (req, res) => {
         ws.on('message', (data) => {
             const payload = JSON.parse(data);
             
-            // Handle Hello and Heartbeat
             if (payload.op === 10) {
                 const interval = payload.d.heartbeat_interval;
                 heartbeatInterval = setInterval(() => {
@@ -66,7 +65,6 @@ app.post('/enable-rpc', async (req, res) => {
                 if (button1Label && button1Url) buttons.push({ label: button1Label, url: button1Url });
                 if (button2Label && button2Url) buttons.push({ label: button2Label, url: button2Url });
 
-                // Send Identify and Presence Payload
                 ws.send(JSON.stringify({
                     op: 2,
                     d: {
